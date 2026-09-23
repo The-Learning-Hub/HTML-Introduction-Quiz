@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Introduction to HTML — Interactive Lesson</title>
+<style>
+:root{--bg:#0f1a10;--panel:#141f15;--panel2:#1a2b1b;--text:#edfaee;--muted:#9dbfa0;--accent:#4ade80;--accent2:#22c55e;--good:#34d399;--warn:#fbbf24;--bad:#fb7185}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:radial-gradient(circle at top right,#1a3d1c 0,#0b150c 42%);color:var(--text);line-height:1.6}
+header{position:sticky;top:0;z-index:10;background:rgba(11,21,12,.92);backdrop-filter:blur(12px);border-bottom:1px solid #2a4a2c}
+.nav{max-width:1180px;margin:auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
+.brand{font-weight:800;font-size:1.05rem}.brand span{color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:18px;font-size:.92rem}nav a:hover{color:white}
+
+/* Hero */
+.hero{max-width:1180px;margin:auto;padding:70px 20px 45px;display:grid;grid-template-columns:1.25fr .75fr;gap:30px;align-items:center}
+.badge{display:inline-block;border:1px solid #2d5c30;color:var(--accent);padding:5px 10px;border-radius:999px;font-size:.8rem}
+h1{font-size:clamp(2.3rem,6vw,4.5rem);line-height:1.02;margin:15px 0}
+.hero p{color:var(--muted);font-size:1.1rem}
+
+/* HTML illustration */
+.html-art{width:220px;height:220px;margin:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;position:relative}
+.html-tag{background:#141f15;border:2px solid var(--accent);border-radius:10px;padding:6px 14px;font-family:Consolas,monospace;font-size:.88rem;color:var(--accent);white-space:nowrap;animation:pulse 2.5s infinite}
+.html-tag:nth-child(2){border-color:#22c55e;color:#22c55e;animation-delay:.3s;padding-left:28px}
+.html-tag:nth-child(3){border-color:#86efac;color:#86efac;animation-delay:.6s;padding-left:42px}
+.html-tag:nth-child(4){border-color:#22c55e;color:#22c55e;animation-delay:.9s;padding-left:28px}
+.html-tag:nth-child(5){animation-delay:1.2s}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.3)}50%{box-shadow:0 0 0 6px rgba(74,222,128,0)}}
+
+/* Sections */
+section{max-width:1180px;margin:auto;padding:35px 20px}
+.section-title{margin-bottom:22px}.section-title h2{margin:0;font-size:2rem}.section-title p{color:var(--muted)}
+
+/* Cards */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.card{background:linear-gradient(145deg,var(--panel),#0d1a0e);border:1px solid #2a4a2c;border-radius:18px;padding:20px;box-shadow:0 12px 30px #0003}
+.card h3{margin-top:0}.icon{font-size:1.7rem}.muted{color:var(--muted)}
+
+/* Code blocks */
+.code{background:#07110a;border:1px solid #2a4a2c;border-radius:12px;padding:16px;overflow:auto;color:#d4f7d8;font-family:Consolas,monospace;font-size:.9rem;line-height:1.8}
+.tag{color:#4ade80}.attr{color:#fbbf24}.val{color:#86efac}.cmt{color:#4a6b4d;font-style:italic}
+
+/* Callout */
+.callout{border-left:4px solid var(--accent);background:#0e1c10;padding:16px;border-radius:0 12px 12px 0;margin:10px 0}
+.warning{border-color:var(--warn);background:#1c160a}
+
+/* Buttons */
+button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer;background:var(--accent);color:#071a09;font-family:inherit}
+button.secondary{background:#1e3420;color:white}
+button:hover{filter:brightness(1.1)}
+
+/* Tabs */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}
+.tab{background:#1e3420;color:white}.tab.active{background:var(--accent);color:#071a09}
+.tab-content{display:none}.tab-content.active{display:block}
+
+/* Timeline / steps */
+.timeline{display:grid;gap:12px}
+.step{display:grid;grid-template-columns:55px 1fr auto;gap:15px;align-items:center;background:var(--panel);border:1px solid #2a4a2c;border-radius:16px;padding:14px}
+.num{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#1a3d1c;color:var(--accent);font-weight:800;font-size:1rem}
+.step.done{border-color:#28785f}.step.done .num{background:#0d4d3d;color:var(--good)}
+
+/* Progress */
+.progress-wrap{background:#182b1a;border-radius:999px;height:12px;overflow:hidden}
+.progress{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;transition:.4s}
+
+/* Quiz */
+.quiz{background:linear-gradient(145deg,#141f15,#0d1a0e);border:1px solid #2d4e30;border-radius:18px;padding:22px}
+.choice{display:block;width:100%;text-align:left;margin:9px 0;background:#1a2f1c;color:white;font-size:.95rem}
+.choice.correct{background:#0d5a43}.choice.wrong{background:#65253a}
+.feedback{margin-top:12px;font-weight:700}.score-txt{font-size:1.2rem;color:var(--accent)}
+
+/* Checklist */
+.checklist label{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #1e3421;cursor:pointer}
+.checklist input{accent-color:var(--accent);margin-top:5px;width:16px;height:16px;flex-shrink:0}
+
+/* Tag explorer */
+.tag-explorer{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.tag-pill{background:#1a2f1c;border:1px solid #2d4e30;border-radius:12px;padding:12px 14px;cursor:pointer;transition:all .2s;text-align:center}
+.tag-pill:hover,.tag-pill.selected{background:#22c55e22;border-color:var(--accent)}
+.tag-pill code{color:var(--accent);font-size:.95rem;display:block;margin-bottom:4px}
+.tag-pill small{color:var(--muted);font-size:.78rem}
+.tag-detail{background:#0e1c10;border:1px solid #2d4e30;border-radius:14px;padding:18px;margin-top:14px;min-height:80px;transition:all .3s}
+
+/* Try-it editor */
+.try-it{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.editor-box{display:flex;flex-direction:column;gap:8px}
+.editor-box label{color:var(--muted);font-size:.85rem;font-weight:600;letter-spacing:.5px}
+textarea{width:100%;background:#07110a;border:1px solid #2a4a2c;border-radius:10px;color:#d4f7d8;font-family:Consolas,monospace;font-size:.88rem;padding:12px;resize:vertical;min-height:180px;outline:none;line-height:1.7}
+textarea:focus{border-color:var(--accent)}
+.preview-box{background:#fff;border-radius:10px;overflow:auto;min-height:180px;padding:12px}
+.preview-box iframe{width:100%;height:100%;min-height:160px;border:none;background:#fff}
+
+/* Reveal cards */
+.card.reveal{cursor:pointer}
+
+footer{max-width:1180px;margin:auto;padding:35px 20px 60px;color:var(--muted);text-align:center;font-size:.9rem}
+
+@media(max-width:800px){
+  .hero{grid-template-columns:1fr}
+  .grid,.grid-2{grid-template-columns:1fr}
+  .step{grid-template-columns:45px 1fr}
+  .step button{grid-column:2}
+  .html-art{width:160px;height:160px}
+  .try-it{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand">🌐 <span>HTML</span> Starter Lab</div>
+    <nav>
+      <a href="#intro">Intro</a>
+      <a href="#tags">Tags</a>
+      <a href="#structure">Structure</a>
+      <a href="#tryit">Try It</a>
+      <a href="#quiz">Quiz</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div>
+    <span class="badge">INTERACTIVE LESSON • BEGINNER</span>
+    <h1>Build Your First<br><span style="color:var(--accent)">Web Page.</span></h1>
+    <p>Learn what HTML is, understand its structure, explore the most important tags, and write your very first webpage — one step at a time.</p>
+    <button onclick="document.querySelector('#intro').scrollIntoView({behavior:'smooth'})">🚀 Start the Lesson</button>
+  </div>
+  <div class="html-art">
+    <div class="html-tag">&lt;html&gt;</div>
+    <div class="html-tag">&lt;head&gt;...&lt;/head&gt;</div>
+    <div class="html-tag">&lt;h1&gt;Hello!&lt;/h1&gt;</div>
+    <div class="html-tag">&lt;/body&gt;</div>
+    <div class="html-tag">&lt;/html&gt;</div>
+  </div>
+</section>
+
+<!-- ── 01 What is HTML ── -->
+<section id="intro">
+  <div class="section-title"><h2>01 — What is HTML?</h2><p>Understand the purpose before writing a single tag.</p></div>
+  <div class="grid">
+    <div class="card"><div class="icon">🌐</div><h3>The Language of the Web</h3><p>HTML stands for <b>HyperText Markup Language</b>. It is the standard language used to create the structure of every webpage on the internet.</p></div>
+    <div class="card"><div class="icon">🏗️</div><h3>Structure, Not Style</h3><p>HTML defines <b>what</b> content is — a heading, a paragraph, an image, a link. CSS adds appearance. JavaScript adds behavior.</p></div>
+    <div class="card"><div class="icon">🧱</div><h3>Built with Tags</h3><p>HTML is made up of <b>elements</b> written as tags like <code>&lt;h1&gt;</code>, <code>&lt;p&gt;</code>, and <code>&lt;img&gt;</code>. Tags wrap around content to give it meaning.</p></div>
+  </div>
+  <br>
+  <div class="callout"><b>The Web Trio:</b> Think of HTML as the <b>skeleton</b> of a webpage, CSS as the <b>clothing and colors</b>, and JavaScript as the <b>muscles and behavior</b>.</div>
+</section>
+
+<!-- ── Reveal: Where HTML is used ── -->
+<section>
+  <div class="section-title"><h2>Where do you see HTML?</h2><p>Click a card to reveal the answer.</p></div>
+  <div class="grid">
+    <div class="card reveal" data-answer="🌍 Every website — news sites, social media, blogs, school portals — is built on HTML."><h3>🌍 Websites</h3><button class="secondary">Reveal</button></div>
+    <div class="card reveal" data-answer="📧 Emails — HTML is used to design and structure the layout of email newsletters."><h3>📧 Email Newsletters</h3><button class="secondary">Reveal</button></div>
+    <div class="card reveal" data-answer="📱 Web Apps — Facebook, YouTube, Google Docs, and most apps you use in a browser run on HTML."><h3>📱 Web Applications</h3><button class="secondary">Reveal</button></div>
+  </div>
+</section>
+
+<!-- ── 02 HTML Tags Explorer ── -->
+<section id="tags">
+  <div class="section-title"><h2>02 — Essential HTML Tags</h2><p>Click any tag to learn what it does.</p></div>
+
+  <div class="tag-explorer" id="tagExplorer">
+    <div class="tag-pill" onclick="showTag('h1')"><code>&lt;h1&gt;</code><small>Heading</small></div>
+    <div class="tag-pill" onclick="showTag('p')"><code>&lt;p&gt;</code><small>Paragraph</small></div>
+    <div class="tag-pill" onclick="showTag('a')"><code>&lt;a&gt;</code><small>Link</small></div>
+    <div class="tag-pill" onclick="showTag('img')"><code>&lt;img&gt;</code><small>Image</small></div>
+    <div class="tag-pill" onclick="showTag('ul')"><code>&lt;ul&gt;</code><small>List</small></div>
+    <div class="tag-pill" onclick="showTag('div')"><code>&lt;div&gt;</code><small>Container</small></div>
+    <div class="tag-pill" onclick="showTag('span')"><code>&lt;span&gt;</code><small>Inline wrap</small></div>
+    <div class="tag-pill" onclick="showTag('table')"><code>&lt;table&gt;</code><small>Table</small></div>
+    <div class="tag-pill" onclick="showTag('form')"><code>&lt;form&gt;</code><small>Form</small></div>
+    <div class="tag-pill" onclick="showTag('button')"><code>&lt;button&gt;</code><small>Button</small></div>
+    <div class="tag-pill" onclick="showTag('input')"><code>&lt;input&gt;</code><small>Input field</small></div>
+    <div class="tag-pill" onclick="showTag('br')"><code>&lt;br&gt;</code><small>Line break</small></div>
+  </div>
+
+  <div class="tag-detail" id="tagDetail">
+    <p class="muted">👆 Click a tag above to see its description and example.</p>
+  </div>
+</section>
+
+<!-- ── 03 HTML Document Structure ── -->
+<section id="structure">
+  <div class="section-title"><h2>03 — The HTML Document Structure</h2><p>Every HTML file must follow this skeleton.</p></div>
+
+  <div class="code">
+<span class="cmt">&lt;!-- Every HTML document starts with a DOCTYPE declaration --&gt;</span>
+<span class="tag">&lt;!DOCTYPE html&gt;</span>
+
+<span class="tag">&lt;html</span> <span class="attr">lang</span>=<span class="val">"en"</span><span class="tag">&gt;</span>
+
+&nbsp;&nbsp;<span class="tag">&lt;head&gt;</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">&lt;!-- Meta info: not visible on the page --&gt;</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="val">"UTF-8"</span><span class="tag">&gt;</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"viewport"</span> <span class="attr">content</span>=<span class="val">"width=device-width, initial-scale=1.0"</span><span class="tag">&gt;</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;title&gt;</span>My First Webpage<span class="tag">&lt;/title&gt;</span>
+&nbsp;&nbsp;<span class="tag">&lt;/head&gt;</span>
+
+&nbsp;&nbsp;<span class="tag">&lt;body&gt;</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">&lt;!-- Everything the user sees goes here --&gt;</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;h1&gt;</span>Hello, World!<span class="tag">&lt;/h1&gt;</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;p&gt;</span>Welcome to my first webpage.<span class="tag">&lt;/p&gt;</span>
+&nbsp;&nbsp;<span class="tag">&lt;/body&gt;</span>
+
+<span class="tag">&lt;/html&gt;</span>
+  </div>
+
+  <br>
+  <div class="grid-2">
+    <div class="callout"><b>&lt;head&gt;</b> — Contains <b>metadata</b>: the page title, character set, links to CSS, and SEO info. The user does not see the head content directly.</div>
+    <div class="callout"><b>&lt;body&gt;</b> — Everything the user <b>actually sees</b> on the page goes inside the body: text, images, links, forms, and more.</div>
+  </div>
+</section>
+
+<!-- ── Tabs: Attributes, Nesting, Semantic ── -->
+<section>
+  <div class="section-title"><h2>04 — Key Concepts</h2><p>Switch between topics to explore.</p></div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('attrs', this)">Attributes</button>
+    <button class="tab" onclick="switchTab('nesting', this)">Nesting</button>
+    <button class="tab" onclick="switchTab('semantic', this)">Semantic HTML</button>
+    <button class="tab" onclick="switchTab('selfclose', this)">Self-Closing Tags</button>
+  </div>
+
+  <div id="attrs" class="tab-content active card">
+    <h3>Attributes</h3>
+    <p>Attributes provide extra information about an element. They go inside the opening tag.</p>
+    <div class="code"><span class="cmt">&lt;!-- href is an attribute of &lt;a&gt; --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"https://example.com"</span> <span class="attr">target</span>=<span class="val">"_blank"</span><span class="tag">&gt;</span>Click here<span class="tag">&lt;/a&gt;</span>
+
+<span class="cmt">&lt;!-- src and alt are attributes of &lt;img&gt; --&gt;</span>
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"photo.jpg"</span> <span class="attr">alt</span>=<span class="val">"A description"</span><span class="tag">&gt;</span>
+
+<span class="cmt">&lt;!-- id and class are used by CSS and JavaScript --&gt;</span>
+<span class="tag">&lt;p</span> <span class="attr">id</span>=<span class="val">"intro"</span> <span class="attr">class</span>=<span class="val">"highlight"</span><span class="tag">&gt;</span>Hello!<span class="tag">&lt;/p&gt;</span></div>
+  </div>
+
+  <div id="nesting" class="tab-content card">
+    <h3>Nesting Elements</h3>
+    <p>HTML elements can be placed inside other elements. The inner element must be closed before the outer one.</p>
+    <div class="code"><span class="cmt">&lt;!-- ✅ Correct nesting --&gt;</span>
+<span class="tag">&lt;ul&gt;</span>
+&nbsp;&nbsp;<span class="tag">&lt;li&gt;</span>First item<span class="tag">&lt;/li&gt;</span>
+&nbsp;&nbsp;<span class="tag">&lt;li&gt;</span>Second item<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ul&gt;</span>
+
+<span class="cmt">&lt;!-- ❌ Wrong — tags are crossed --&gt;</span>
+<span class="tag">&lt;b&gt;&lt;i&gt;</span>text<span class="tag">&lt;/b&gt;&lt;/i&gt;</span></div>
+    <div class="callout warning" style="margin-top:12px"><b>⚠️ Rule:</b> Always close the innermost tag first. Think of it like stacking boxes — you close the inner box before closing the outer one.</div>
+  </div>
+
+  <div id="semantic" class="tab-content card">
+    <h3>Semantic HTML</h3>
+    <p>Semantic tags tell the browser (and developers) what a section <b>means</b>, not just how it looks.</p>
+    <div class="code"><span class="cmt">&lt;!-- Non-semantic (vague) --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"header"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"nav"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- Semantic (meaningful) ✅ --&gt;</span>
+<span class="tag">&lt;header&gt;</span>...<span class="tag">&lt;/header&gt;</span>
+<span class="tag">&lt;nav&gt;</span>...<span class="tag">&lt;/nav&gt;</span>
+<span class="tag">&lt;main&gt;</span>...<span class="tag">&lt;/main&gt;</span>
+<span class="tag">&lt;article&gt;</span>...<span class="tag">&lt;/article&gt;</span>
+<span class="tag">&lt;footer&gt;</span>...<span class="tag">&lt;/footer&gt;</span></div>
+  </div>
+
+  <div id="selfclose" class="tab-content card">
+    <h3>Self-Closing Tags</h3>
+    <p>Some HTML elements do not have content inside them and do not need a closing tag.</p>
+    <div class="code"><span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"photo.jpg"</span> <span class="attr">alt</span>=<span class="val">"Photo"</span><span class="tag">&gt;</span>   <span class="cmt">&lt;!-- Image --&gt;</span>
+<span class="tag">&lt;br&gt;</span>                               <span class="cmt">&lt;!-- Line break --&gt;</span>
+<span class="tag">&lt;hr&gt;</span>                               <span class="cmt">&lt;!-- Horizontal rule --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"text"</span><span class="tag">&gt;</span>              <span class="cmt">&lt;!-- Text input --&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="val">"UTF-8"</span><span class="tag">&gt;</span>          <span class="cmt">&lt;!-- Metadata --&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"stylesheet"</span> <span class="attr">href</span>=<span class="val">"style.css"</span><span class="tag">&gt;</span></div>
+  </div>
+</section>
+
+<!-- ── 05 Setup Steps ── -->
+<section>
+  <div class="section-title"><h2>05 — Write Your First HTML File</h2><p>Mark each step as done as you go.</p></div>
+  <div class="timeline">
+    <div class="step" data-step="1"><div class="num">1</div><div><b>Install VS Code</b><div class="muted">Download and install Visual Studio Code — the most popular free code editor.</div></div><button onclick="complete(1)">Mark Done</button></div>
+    <div class="step" data-step="2"><div class="num">2</div><div><b>Create a folder</b><div class="muted">Make a new folder called <code>my-website</code> on your desktop or documents folder.</div></div><button onclick="complete(2)">Mark Done</button></div>
+    <div class="step" data-step="3"><div class="num">3</div><div><b>Create index.html</b><div class="muted">Open the folder in VS Code and create a new file named <code>index.html</code>. This is always your homepage.</div></div><button onclick="complete(3)">Mark Done</button></div>
+    <div class="step" data-step="4"><div class="num">4</div><div><b>Type the HTML skeleton</b><div class="muted">Type <code>!</code> and press <kbd>Tab</kbd> in VS Code — it will auto-generate the full boilerplate for you.</div></div><button onclick="complete(4)">Mark Done</button></div>
+    <div class="step" data-step="5"><div class="num">5</div><div><b>Open in browser</b><div class="muted">Right-click your file and choose <b>Open with → Browser</b>, or install the Live Server extension in VS Code.</div></div><button onclick="complete(5)">Mark Done</button></div>
+  </div>
+  <br>
+  <div class="progress-wrap"><div class="progress" id="progress"></div></div>
+  <p class="muted" id="progressText">0 / 5 steps completed</p>
+</section>
+
+<!-- ── 06 Try It Editor ── -->
+<section id="tryit">
+  <div class="section-title"><h2>06 — Try It Yourself</h2><p>Write HTML in the editor and see the live preview on the right.</p></div>
+  <div class="card" style="padding:20px">
+    <div class="try-it">
+      <div class="editor-box">
+        <label>✏️ YOUR HTML CODE</label>
+        <textarea id="htmlEditor" oninput="runPreview()" spellcheck="false">&lt;h1&gt;Hello, World!&lt;/h1&gt;
+&lt;p&gt;This is my &lt;b&gt;first&lt;/b&gt; webpage.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;HTML is fun&lt;/li&gt;
+  &lt;li&gt;I am learning tags&lt;/li&gt;
+  &lt;li&gt;This is a list&lt;/li&gt;
+&lt;/ul&gt;
+&lt;a href="#"&gt;Click me!&lt;/a&gt;</textarea>
+        <button onclick="resetEditor()" class="secondary">↺ Reset</button>
+      </div>
+      <div class="editor-box">
+        <label>👁️ LIVE PREVIEW</label>
+        <div class="preview-box">
+          <iframe id="preview" title="Preview"></iframe>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="callout"><b>💡 Try it:</b> Change the <code>&lt;h1&gt;</code> text, add a <code>&lt;p&gt;</code>, insert an <code>&lt;hr&gt;</code> line, or try writing a second list item!</div>
+  </div>
+</section>
+
+<!-- ── Checklist ── -->
+<section>
+  <div class="section-title"><h2>07 — Lesson Checklist</h2><p>Check off each concept as you feel confident about it.</p></div>
+  <div class="card">
+    <div class="checklist">
+      <label><input type="checkbox"> I can explain what HTML stands for and what it does.</label>
+      <label><input type="checkbox"> I understand the difference between HTML, CSS, and JavaScript.</label>
+      <label><input type="checkbox"> I know what opening and closing tags are.</label>
+      <label><input type="checkbox"> I can write a basic HTML document structure from memory.</label>
+      <label><input type="checkbox"> I understand what attributes are and how to use them.</label>
+      <label><input type="checkbox"> I know the difference between block and inline elements.</label>
+      <label><input type="checkbox"> I understand what semantic HTML means.</label>
+      <label><input type="checkbox"> I have written and opened my first HTML file in a browser.</label>
+    </div>
+  </div>
+</section>
+
+<!-- ── Quiz ── -->
+<section id="quiz">
+  <div class="section-title"><h2>🎯 HTML Challenge Quiz</h2><p>Test what you've learned before moving on.</p></div>
+  <div class="quiz">
+    <div id="question"></div>
+    <div id="choices"></div>
+    <div id="feedback" class="feedback"></div>
+    <br>
+    <button id="nextBtn" onclick="nextQ()" style="display:none">Next Question →</button>
+    <div class="score-txt" id="scoreTxt"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>🌐 HTML Starter Lab &nbsp;•&nbsp; Beginner Lesson &nbsp;•&nbsp; Learn → Practice → Build</footer>
+
+<script>
+/* ── Setup steps ── */
+const done = new Set();
+function complete(n) {
+  done.has(n) ? done.delete(n) : done.add(n);
+  document.querySelector(`[data-step="${n}"]`).classList.toggle('done', done.has(n));
+  document.querySelector(`[data-step="${n}"] button`).textContent = done.has(n) ? '✓ Done' : 'Mark Done';
+  document.getElementById('progress').style.width = (done.size / 5 * 100) + '%';
+  document.getElementById('progressText').textContent = `${done.size} / 5 steps completed`;
+}
+
+/* ── Reveal cards ── */
+document.querySelectorAll('.card.reveal').forEach(c => {
+  c.querySelector('button').onclick = () => {
+    c.querySelector('button').remove();
+    const p = document.createElement('p');
+    p.textContent = c.dataset.answer;
+    p.style.color = 'var(--accent)';
+    c.appendChild(p);
+  };
+});
+
+/* ── Tabs ── */
+function switchTab(id, el) {
+  document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+
+/* ── Tag explorer ── */
+const tagInfo = {
+  h1:     { label: '<h1> — Heading', desc: 'Defines the main heading of a page. There are six heading levels: &lt;h1&gt; (largest) to &lt;h6&gt; (smallest). Use &lt;h1&gt; only once per page.', ex: '<span class="tag">&lt;h1&gt;</span>Main Title<span class="tag">&lt;/h1&gt;</span>\n<span class="tag">&lt;h2&gt;</span>Subtitle<span class="tag">&lt;/h2&gt;</span>\n<span class="tag">&lt;h3&gt;</span>Section<span class="tag">&lt;/h3&gt;</span>' },
+  p:      { label: '<p> — Paragraph', desc: 'Defines a block of text as a paragraph. The browser adds spacing above and below automatically.', ex: '<span class="tag">&lt;p&gt;</span>This is a paragraph of text.<span class="tag">&lt;/p&gt;</span>' },
+  a:      { label: '<a> — Anchor (Link)', desc: 'Creates a hyperlink. The <b>href</b> attribute sets the destination URL. Use <b>target="_blank"</b> to open in a new tab.', ex: '<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"https://google.com"</span> <span class="attr">target</span>=<span class="val">"_blank"</span><span class="tag">&gt;</span>Go to Google<span class="tag">&lt;/a&gt;</span>' },
+  img:    { label: '<img> — Image', desc: 'Embeds an image. <b>src</b> is the file path or URL. <b>alt</b> provides a description for accessibility — always include it.', ex: '<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"photo.jpg"</span> <span class="attr">alt</span>=<span class="val">"A photo"</span> <span class="attr">width</span>=<span class="val">"300"</span><span class="tag">&gt;</span>' },
+  ul:     { label: '<ul> — Unordered List', desc: 'Creates a bulleted list. Each item uses &lt;li&gt;. Use &lt;ol&gt; instead for a numbered list.', ex: '<span class="tag">&lt;ul&gt;</span>\n&nbsp;&nbsp;<span class="tag">&lt;li&gt;</span>Apples<span class="tag">&lt;/li&gt;</span>\n&nbsp;&nbsp;<span class="tag">&lt;li&gt;</span>Bananas<span class="tag">&lt;/li&gt;</span>\n<span class="tag">&lt;/ul&gt;</span>' },
+  div:    { label: '<div> — Division (Container)', desc: 'A block-level container used to group elements for layout or styling. Has no visual meaning on its own.', ex: '<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"card"</span><span class="tag">&gt;</span>\n&nbsp;&nbsp;<span class="tag">&lt;h2&gt;</span>Title<span class="tag">&lt;/h2&gt;</span>\n&nbsp;&nbsp;<span class="tag">&lt;p&gt;</span>Content here.<span class="tag">&lt;/p&gt;</span>\n<span class="tag">&lt;/div&gt;</span>' },
+  span:   { label: '<span> — Inline Wrapper', desc: 'An inline container used to style a part of text or group inline elements. Does not break the line like &lt;div&gt;.', ex: '<span class="tag">&lt;p&gt;</span>Hello, <span class="tag">&lt;span</span> <span class="attr">style</span>=<span class="val">"color:red"</span><span class="tag">&gt;</span>world<span class="tag">&lt;/span&gt;</span>!<span class="tag">&lt;/p&gt;</span>' },
+  table:  { label: '<table> — Table', desc: 'Creates a data table. Use &lt;tr&gt; for rows, &lt;th&gt; for header cells, and &lt;td&gt; for data cells.', ex: '<span class="tag">&lt;table&gt;</span>\n&nbsp;&nbsp;<span class="tag">&lt;tr&gt;&lt;th&gt;</span>Name<span class="tag">&lt;/th&gt;&lt;th&gt;</span>Age<span class="tag">&lt;/th&gt;&lt;/tr&gt;</span>\n&nbsp;&nbsp;<span class="tag">&lt;tr&gt;&lt;td&gt;</span>Juan<span class="tag">&lt;/td&gt;&lt;td&gt;</span>16<span class="tag">&lt;/td&gt;&lt;/tr&gt;</span>\n<span class="tag">&lt;/table&gt;</span>' },
+  form:   { label: '<form> — Form', desc: 'Creates an input form for collecting user data. The <b>action</b> attribute sets where the data is sent, and <b>method</b> sets how (GET or POST).', ex: '<span class="tag">&lt;form</span> <span class="attr">action</span>=<span class="val">"/submit"</span> <span class="attr">method</span>=<span class="val">"POST"</span><span class="tag">&gt;</span>\n&nbsp;&nbsp;<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"text"</span> <span class="attr">name</span>=<span class="val">"username"</span><span class="tag">&gt;</span>\n&nbsp;&nbsp;<span class="tag">&lt;button&gt;</span>Submit<span class="tag">&lt;/button&gt;</span>\n<span class="tag">&lt;/form&gt;</span>' },
+  button: { label: '<button> — Button', desc: 'A clickable button. Can trigger JavaScript with onclick, or submit a form when inside a &lt;form&gt; element.', ex: '<span class="tag">&lt;button</span> <span class="attr">onclick</span>=<span class="val">"alert(\'Hi!\')"</span><span class="tag">&gt;</span>Click Me<span class="tag">&lt;/button&gt;</span>' },
+  input:  { label: '<input> — Input Field', desc: 'A single-line field for user input. The <b>type</b> attribute changes its behavior: text, password, email, checkbox, radio, file, and more.', ex: '<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"text"</span> <span class="attr">placeholder</span>=<span class="val">"Enter name"</span><span class="tag">&gt;</span>\n<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"email"</span> <span class="attr">placeholder</span>=<span class="val">"Email"</span><span class="tag">&gt;</span>\n<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"checkbox"</span><span class="tag">&gt;</span> I agree' },
+  br:     { label: '<br> — Line Break', desc: 'Inserts a single line break inside text. It is a self-closing tag — no content, no closing tag needed.', ex: '<span class="tag">&lt;p&gt;</span>Line one.<span class="tag">&lt;br&gt;</span>Line two.<span class="tag">&lt;/p&gt;</span>' },
+};
+
+function showTag(key) {
+  document.querySelectorAll('.tag-pill').forEach(p => p.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  const t = tagInfo[key];
+  document.getElementById('tagDetail').innerHTML =
+    `<h3 style="color:var(--accent);margin:0 0 8px">${t.label}</h3><p style="color:var(--muted);margin:0 0 12px">${t.desc}</p><div class="code">${t.ex}</div>`;
+}
+
+/* ── Try-it editor ── */
+function runPreview() {
+  const code = document.getElementById('htmlEditor').value;
+  const frame = document.getElementById('preview');
+  const doc = frame.contentDocument || frame.contentWindow.document;
+  doc.open(); doc.write(`<style>body{font-family:sans-serif;padding:10px;font-size:15px;color:#111}a{color:#166534}</style>${code}`); doc.close();
+}
+function resetEditor() {
+  document.getElementById('htmlEditor').value = `<h1>Hello, World!</h1>\n<p>This is my <b>first</b> webpage.</p>\n<ul>\n  <li>HTML is fun</li>\n  <li>I am learning tags</li>\n  <li>This is a list</li>\n</ul>\n<a href="#">Click me!</a>`;
+  runPreview();
+}
+runPreview(); // initial render
+
+/* ── Quiz ── */
+const qs = [
+  { q: 'What does HTML stand for?', a: ['HyperText Markup Language', 'High-Tech Modern Language', 'HyperTransfer Markup Link', 'HyperText Machine Logic'], c: 0 },
+  { q: 'Which tag is used for the largest heading?', a: ['<h6>', '<heading>', '<h1>', '<title>'], c: 2 },
+  { q: 'Which part of an HTML document contains content the user sees?', a: ['<head>', '<meta>', '<style>', '<body>'], c: 3 },
+  { q: 'What attribute does the <a> tag use to set its destination URL?', a: ['src', 'link', 'href', 'url'], c: 2 },
+  { q: 'Which of these is a self-closing tag?', a: ['<p>', '<div>', '<img>', '<span>'], c: 2 },
+  { q: 'What is the correct way to create an unordered list?', a: ['<ol><li>Item</li></ol>', '<ul><li>Item</li></ul>', '<list><item>Item</item></list>', '<dl><dt>Item</dt></dl>'], c: 1 },
+  { q: 'What does the <title> tag inside <head> control?', a: ['The main heading on the page', 'The browser tab name', 'The page background', 'The font size'], c: 1 },
+  { q: 'Which attribute provides a text description for an image (for accessibility)?', a: ['title', 'caption', 'desc', 'alt'], c: 3 },
+];
+
+let qi = 0, score = 0;
+
+function renderQ() {
+  const x = qs[qi];
+  document.getElementById('question').innerHTML = `<h3>${qi + 1}/${qs.length}. ${x.q}</h3>`;
+  document.getElementById('choices').innerHTML = x.a.map((v, i) =>
+    `<button class="choice" onclick="answer(${i})">${String.fromCharCode(65 + i)}. ${v}</button>`
+  ).join('');
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('nextBtn').style.display = 'none';
+  document.getElementById('scoreTxt').textContent = `Score: ${score} / ${qs.length}`;
+}
+
+function answer(i) {
+  const x = qs[qi];
+  const bs = document.querySelectorAll('.choice');
+  bs.forEach(b => b.disabled = true);
+  if (i === x.c) {
+    score++;
+    bs[i].classList.add('correct');
+    document.getElementById('feedback').textContent = '✅ Correct!';
+  } else {
+    bs[i].classList.add('wrong');
+    bs[x.c].classList.add('correct');
+    document.getElementById('feedback').textContent = '❌ Not quite — the highlighted answer is correct. Review and keep going!';
+  }
+  document.getElementById('scoreTxt').textContent = `Score: ${score} / ${qs.length}`;
+  document.getElementById('nextBtn').style.display = 'inline-block';
+}
+
+function nextQ() {
+  qi++;
+  if (qi < qs.length) {
+    renderQ();
+  } else {
+    const pct = Math.round(score / qs.length * 100);
+    document.getElementById('question').innerHTML =
+      `<h3>🎉 Quiz Complete!</h3><p>You scored <b>${score} out of ${qs.length}</b> (${pct}%).</p>`;
+    document.getElementById('choices').innerHTML = '';
+    document.getElementById('feedback').textContent =
+      pct === 100 ? '🏆 Perfect score! You are ready for CSS and JavaScript.' :
+      pct >= 70   ? '👍 Great job! Review the questions you missed and you are ready to move on.' :
+                    '📖 Good try! Go back through the lesson and try the quiz again.';
+    document.getElementById('nextBtn').style.display = 'none';
+  }
+}
+
+renderQ();
+</script>
+</body>
+</html>
