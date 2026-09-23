@@ -442,13 +442,18 @@ const qs = [
   { q: 'Which attribute provides a text description for an image (for accessibility)?', a: ['title', 'caption', 'desc', 'alt'], c: 3 },
 ];
 
+// Escape < and > so HTML tags in answers display as text, not as elements
+function esc(str) {
+  return str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
 let qi = 0, score = 0;
 
 function renderQ() {
   const x = qs[qi];
-  document.getElementById('question').innerHTML = `<h3>${qi + 1}/${qs.length}. ${x.q}</h3>`;
+  document.getElementById('question').innerHTML = `<h3>${qi + 1}/${qs.length}. ${esc(x.q)}</h3>`;
   document.getElementById('choices').innerHTML = x.a.map((v, i) =>
-    `<button class="choice" onclick="answer(${i})">${String.fromCharCode(65 + i)}. ${v}</button>`
+    `<button class="choice" onclick="answer(${i})">${String.fromCharCode(65 + i)}. ${esc(v)}</button>`
   ).join('');
   document.getElementById('feedback').textContent = '';
   document.getElementById('nextBtn').style.display = 'none';
